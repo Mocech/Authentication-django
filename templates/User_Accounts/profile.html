@@ -1,0 +1,33 @@
+{% extends 'User_Accounts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block user %}
+<div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+      <div class="media-body">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+      </div>
+    </div>
+    <form method="POST" class = "form-group" enctype = "multipart/form-data">
+      {% csrf_token %}
+      <fieldset class = "form-group">
+           <legend class = "border-buttom mb-4">Profile Info</legend>
+      </fieldset>
+      {{ u_form|crispy }}
+      {{ p_form|crispy }}
+     <div class = "form-group" > 
+      <button class="btn btn-outline-info" type = "submit"> Update</button>
+     </div> 
+     {% comment %} {% if request.user.profile.image  %}
+       <img src="{{ request.user.profile.image.url }}">
+     
+     {% else %}
+       <p>No image uploaded.</p>  
+
+     {% endif %} {% endcomment %}
+   </form> 
+</div>
+{% endblock user %}
+    

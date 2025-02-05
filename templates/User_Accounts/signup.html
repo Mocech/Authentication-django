@@ -1,0 +1,65 @@
+{% extends 'User_Accounts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block user %}
+<div class="content-section">
+    <form class="form-group" method= 'POST'>
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Sign Up</legend>
+        </fieldset>
+        {{ form|crispy }}
+
+        <button class="btn btn-outline-info" type="submit">Sign Up</button>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already have an account?<a class="ml-2" href="{% url 'login' %}">Login</a>
+            </small>
+        </div>
+    </form>
+</div>
+ <style>
+    .input-group {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .input-group input[type="password"] {
+        padding-right: 30px;
+    }
+</style> 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var passwordFields = document.querySelectorAll('input[type="password"]');
+
+        passwordFields.forEach(function (passwordField) {
+            var inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+
+            passwordField.parentNode.insertBefore(inputGroup, passwordField);
+            inputGroup.appendChild(passwordField);
+
+            var togglePassword = document.createElement('span');
+            togglePassword.className = 'password-toggle';
+            togglePassword.innerHTML = '<i class="fas fa-eye"></i>';
+
+            togglePassword.addEventListener('click', function () {
+                var type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            inputGroup.appendChild(togglePassword);
+        });
+    });
+</script>
+{% endblock user %}

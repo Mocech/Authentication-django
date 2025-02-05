@@ -1,0 +1,80 @@
+{% extends 'User_Accounts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block user %}
+<div class="content-section">
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Login</legend>
+        </fieldset>
+
+        
+        <!-- Render the form fields with crispy forms -->
+        {{ form|crispy }}
+
+        <!-- Script to dynamically add the toggle icon inside the password input -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var passwordInput = document.querySelector('input[name="password"]');
+                
+                // Create the icon element
+                var togglePasswordIcon = document.createElement('span');
+                togglePasswordIcon.className = 'input-group-text password-toggle';
+                togglePasswordIcon.innerHTML = '<i id="togglePasswordIcon" class="fas fa-eye"></i>';
+                
+                // Function to toggle password visibility
+                togglePasswordIcon.addEventListener('click', function () {
+                    var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('fa-eye-slash');
+                });
+                
+                // Wrap the password input with the icon inside an input-group
+                var inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group';
+                passwordInput.parentNode.insertBefore(inputGroup, passwordInput);
+                inputGroup.appendChild(passwordInput);
+                inputGroup.appendChild(togglePasswordIcon);
+            });
+        </script>
+
+        <!-- Login button -->
+        <button class="btn btn-outline-info" type="submit">Login</button>
+
+        <!-- Forgot password link -->
+        <small class="text-muted">
+            <a class="ml-2" href="{% url 'password_reset' %}">Forgot Password</a>
+        </small>
+
+        <!-- Sign up link -->
+        <div class="border-top pt-3">
+            <small class="text-muted">
+               Create an account? <a class="ml-2" href="{% url 'signup' %}">Sign Up</a>
+            </small>
+        </div>
+    </form>
+</div>
+
+ <style>
+    .input-group {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        
+ 
+    }
+
+
+.input-group input[type="password"] {
+    padding-right: 30px;
+}
+</style> 
+
+{% endblock user %}
